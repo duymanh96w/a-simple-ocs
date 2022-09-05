@@ -7,7 +7,6 @@ from bson.objectid import ObjectId
 
 
 async def get_billing_info(username: str, db: AsyncIOMotorDatabase):
-    print(db)
     return await db.billing_info.find_one({'username': username})
 
 

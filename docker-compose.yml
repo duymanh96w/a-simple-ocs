@@ -36,6 +36,19 @@ services:
       timeout: 3s
       retries: 5
       
+  mongo-setup-db:
+    image: mongo:4.4
+    restart: on-failure
+    volumes:
+    - ./init-mongo.sh:/scripts/init-mongo.sh
+    env_file:
+      - .env
+    environment:
+      DB_NAME: ${DB_NAME}
+    entrypoint: ["bash", "/scripts/init-mongo.sh" ]
+    depends_on:
+      mongodb:
+        condition: service_healthy
 
   mongodb:
     image: mongo:4.4
