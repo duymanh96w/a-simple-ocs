@@ -1,0 +1,56 @@
+version: '3.9'
+
+services:
+  backend:
+    build:
+      context: .
+    ports:
+      - 9000:8000
+    
+    depends_on:
+      redis:
+        condition: service_healthy
+      mongodb:
+        condition: service_healthy
+
+  event_listener:
+    build:
+      context: .
+      dockerfile: event_listener.Dockerfile
+    
+    depends_on:
+      redis:
+        condition: service_healthy
+      mongodb:
+        condition: service_healthy
+
+  redis:
+    image: redis:7.0.2-alpine
+    ports:
+      - 5500:6379
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli ping | grep PONG"]
+      interval: 1s
+      timeout: 3s
+      retries: 5
+      
+
+  mongodb:
+    image: mongo:4.4
+    command: mongod --replSet rs0 --bind_ip_all
+    volumes:
+      - mongo:/data/db
+      - mongo_config:/data/configdb
+    ports:
+      - 127.0.0.1:30000:27017
+    healthcheck:
+      test: test $$(echo "rs.initiate({_id:'rs0',members:[{_id:0,host:\"mongodb:27017\"}]}).ok || rs.status().ok" | mongo --quiet) -eq 1
+      interval: 2s
+      start_period: 30s
+ 
+volumes:
+  mongo:
+  mongo_config:
+  redis-data:
