@@ -1,7 +1,7 @@
 # Setup an simple OCS using FastAPI, MongoDB and Redis
 
 **Overview**  
-This repository simulates a simple Online Charging System with 2 APIs: one for recording call details and one for querying billing information
+This repository simulates an simple Online Charging System with 2 APIs: one for recording call details and one for querying billing information
 
 To speed up the billing info queries, the index for username and caching are used in this application. A process called "event listener" is built to make sure cached data (stored in Redis) is same with data in MongoDB, it leverages the MongoDB Change Stream to listen to the events in DB and update data in Redis.
 
