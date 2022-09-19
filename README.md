@@ -1,4 +1,4 @@
-# Setup a simple OCS using FastAPI, MongoDB and Redis
+# Setup an simple OCS using FastAPI, MongoDB and Redis
 
 **Overview**  
 This repository simulates a simple Online Charging System with 2 APIs: one for recording call details and one for querying billing information
@@ -14,7 +14,7 @@ Docker Compose V2
 Docker Engine 19.03.0+
 
 **Usage**  
-To run this application, make sure port 9000, 5500 and 30000 on your local machine are available, then do
+To run this application, make sure ports 9000, 5500 and 30000 on your local machine are available, then do
 ```bash
 docker compose up --build
 ```
